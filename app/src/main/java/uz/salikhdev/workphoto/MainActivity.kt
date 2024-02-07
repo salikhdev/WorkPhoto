@@ -22,16 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 101)
         }
 
 
-        binding.button.setOnClickListener {
+        binding.buttonCamera.setOnClickListener {
             launcherCamera.launch(null)
         }
 
@@ -42,8 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val launcherCamera =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { result ->
+    private val launcherCamera = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { result ->
 
             result?.let {
                 binding.image.setImageBitmap(it)
@@ -51,17 +46,14 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    private val launcherGalery =
-        registerForActivityResult(ActivityResultContracts.GetContent()) {uri->
-
+    private val launcherGalery = registerForActivityResult(ActivityResultContracts.GetContent()) {uri->
             uri?.let {
                 binding.image.setImageURI(uri)
             }
-
-
         }
 
 
+    // Kerak bo'lsa Uri orqali Bitmap yaratish.
     fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
         var parcelFileDescriptor: ParcelFileDescriptor? = null
         try {
